@@ -1,0 +1,42 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Armin</title>
+    <style>
+      :root{--muted:rgba(240,240,240,0.95);--card:rgba(0,0,0,0.6);--accent-start:#7fe1b6;--accent-end:#31a77f}
+      html{scroll-behavior:smooth}
+      body{margin:0;font-family:Segoe UI, Tahoma, sans-serif;background:linear-gradient(rgba(5,12,10,0.72),rgba(5,12,10,0.72)),url('Anime.png') center/cover fixed;color:var(--muted)}
+      .container{max-width:900px;margin:28px auto;padding:20px;background:rgba(0,0,0,0.55);border-radius:12px}
+      .avatar{width:200px;height:200px;object-fit:cover;border-radius:10px;float:right;margin-left:18px}
+      h1{color:var(--accent-start);text-align:center}
+      .bio{list-style:none;padding:0}
+      .bio p{background:var(--card);margin:12px 0;padding:14px;border-radius:8px;color:var(--muted);border-left:4px solid var(--accent-start)}
+      .btn{display:inline-block;padding:10px 14px;background:linear-gradient(90deg,var(--accent-start),var(--accent-end));color:#041018;border-radius:8px;text-decoration:none;margin:6px}
+      @media(max-width:600px){.avatar{float:none;display:block;margin:0 auto 12px}}
+    </style>
+</head>
+<body>
+  <a id="top"></a>
+  <div class="container">
+    <div style="text-align:center;margin-bottom:10px">
+      <a class="btn" href="Home.html">Home</a>
+      <a class="btn" href="Armin-gallery.html">Gallery</a>
+    </div>
+    <img src="armin.png" alt="Armin" class="avatar" onerror="this.style.display='none'">
+    <h1>Armin Arlert</h1>
+    <div class="bio">
+      <p>Armin Arlert is one of the series’ most important thinkers. He starts as a quiet, thoughtful boy who often seems overshadowed by stronger fighters, yet his intelligence becomes one of the greatest assets in the story. He is not the loudest person in the room, but his ideas often turn the tide of events. That quality makes him essential, because in a world defined by brutality, strategy can matter as much as strength.</p>
+      <p>His growth is tied closely to courage. Armin’s biggest challenge is learning to trust himself when his voice shakes, and to act when fear tells him to stay quiet. That transformation is profound because his bravery is not loud; it is steady, deliberate, and deeply human. He becomes a person who can step forward when it matters most and choose action over comfort.</p>
+      <p>Armin’s strategic mind makes him valuable in both tactical and emotional situations. He understands people in a way that is often more subtle than raw force. His empathy allows him to see the impact of choices and to consider what will happen next, not just what feels right in the moment. This perspective is crucial in a world where emotion and survival are constantly at odds.</p>
+      <p>In the end, Armin represents the idea that wisdom and compassion can be as powerful as combat skill. He is not a warrior defined only by what he can kill; he is a leader of thought, a person who contributes not by domination, but by insight.</p>
+    </div>
+    <div style="clear:both"></div>
+    <div style="text-align:center;margin-top:18px">
+      <a class="btn" href="Armin-powers.html">Powers</a>
+      <a class="btn" href="Armin-tools.html">Tools</a>
+      <a class="btn" href="Armin.html">Back to Armin</a>
+    </div>
+  </div>
+  <a href="#top" class="btn" style="position:fixed;right:18px;bottom:18px;z-index:999;padding:10px 14px">Top</a>
+</body>
+</html>

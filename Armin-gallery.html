@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Armin Gallery</title>
+  <style>
+    body{margin:0;font-family:Segoe UI, Tahoma, sans-serif;background:linear-gradient(rgba(7,13,12,0.76),rgba(7,13,12,0.76)), url('Anime.png') center/cover fixed;color:#edfff9}
+    .wrap{max-width:1100px;margin:26px auto;padding:20px;background:rgba(0,0,0,0.56);border-radius:12px}
+    .topbar{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,#6bd9a2,#9ff0d2);color:#051915;text-decoration:none;font-weight:700}
+    h1{text-align:center;color:#b9efd2}
+    #galleryGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:18px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <a class="btn" href="Home.html">Home</a>
+      <a class="btn" href="Armin.html">Back to Armin</a>
+    </div>
+    <h1>Armin Gallery</h1>
+    <div id="galleryGrid"></div>
+  </div>
+  <script>
+    async function fetchImages(){
+      const api='https://commons.wikimedia.org/w/api.php';
+      const params=new URLSearchParams({action:'query',format:'json',generator:'search',gsrsearch:'Armin Arlert anime',gsrlimit:20,prop:'imageinfo',iiprop:'url|extmetadata',origin:'*'});
+      const data=await fetch(api + '?' + params.toString()).then(r=>r.json());
+      const pages = data.query && data.query.pages ? Object.values(data.query.pages) : [];
+      return pages.map(p=>{const info=p.imageinfo&&p.imageinfo[0]; return info ? {url:info.url, source:'https://commons.wikimedia.org/wiki/File:'+encodeURIComponent(p.title.replace('File:',''))} : null;}).filter(Boolean);
+    }
+    function render(items){
+      const grid=document.getElementById('galleryGrid');
+      items.forEach(item=>{
+        const card=document.createElement('div');
+        card.style.background='rgba(255,255,255,0.04)'; card.style.borderRadius='10px'; card.style.padding='8px';
+        const img=document.createElement('img');
+        img.src=item.url; img.alt='Armin image';
+        img.style.width='100%'; img.style.height='180px'; img.style.objectFit='cover'; img.style.borderRadius='8px';
+        const link=document.createElement('a');
+        link.href=item.source; link.target='_blank'; link.textContent='Source';
+        link.style.display='inline-block'; link.style.marginTop='8px'; link.style.color='#8ec5ff'; link.style.textDecoration='none';
+        card.appendChild(img); card.appendChild(link); grid.appendChild(card);
+      });
+    }
+    fetchImages().then(items=>render(items)).catch(()=>document.getElementById('galleryGrid').innerHTML='<p style="color:#dff9eb">No images loaded.</p>');
+  </script>
+</body>
+</html>

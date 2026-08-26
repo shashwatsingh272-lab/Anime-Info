@@ -1,0 +1,508 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Anime Character Vault</title>
+	<style>
+		:root{
+			--bg-1:#09070b;
+			--bg-2:#180d18;
+			--bg-3:#110b12;
+			--panel:rgba(19,13,22,0.86);
+			--panel-strong:rgba(12,10,17,0.92);
+			--line:rgba(255,255,255,0.08);
+			--text:#f9f3ff;
+			--muted:#eadaf8;
+			--accent:#ff5b7d;
+			--accent-2:#8b5cf6;
+			--accent-3:#f7bf5a;
+			--jade:#72f0d3;
+			--danger:#ff7c7c;
+		}
+		html{scroll-behavior:smooth;overflow-x:hidden;scroll-padding-top:40px}
+		*{box-sizing:border-box}
+		body{
+			margin:0;
+			font-family:Segoe UI, Tahoma, sans-serif;
+			color:var(--text);
+			overflow-x:hidden;
+			background:
+				radial-gradient(circle at top left, rgba(255,91,125,0.12), transparent 20%),
+				radial-gradient(circle at top right, rgba(139,92,246,0.20), transparent 28%),
+				radial-gradient(circle at bottom left, rgba(247,191,90,0.10), transparent 22%),
+				linear-gradient(rgba(9,7,11,0.76), rgba(9,7,11,0.9)),
+				url('Anime.png') center/cover no-repeat;
+			background-attachment:scroll;
+			background-size:cover;
+			min-height:100vh;
+			position:relative;
+		}
+		body::before,
+		body::after{
+			content:"";
+			position:fixed;
+			pointer-events:none;
+			filter:blur(60px);
+			opacity:0.55;
+			z-index:0;
+		}
+		body::before{width:260px;height:260px;left:-50px;top:80px;background:rgba(255,91,125,0.18)}
+		body::after{width:300px;height:300px;right:-80px;top:200px;background:rgba(139,92,246,0.16)}
+		*::selection{background:rgba(255,133,170,0.35);color:#fff}
+		::-webkit-scrollbar{width:12px}
+		::-webkit-scrollbar-track{background:rgba(12,9,17,0.85)}
+		::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#ff5b7d,#8b5cf6);border-radius:999px;border:3px solid rgba(12,9,17,0.85)}
+		.site-header{position:sticky;top:0;z-index:999;backdrop-filter:blur(12px);background:rgba(10,7,12,0.62);border-bottom:1px solid rgba(255,255,255,0.08)}
+		.site-header-inner{max-width:1200px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+		.brand{font-weight:900;letter-spacing:0.18em;text-transform:uppercase;font-size:0.8rem;color:#ffeaf3;background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.08)}
+		.topnav{display:flex;flex-wrap:wrap;gap:10px}
+		.topnav a{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;color:var(--text);text-decoration:none;font-size:0.78rem;font-weight:700;opacity:0.9;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);transition:all 0.2s ease}
+		.topnav a:hover{opacity:1;background:rgba(139,92,246,0.12);border-color:rgba(255,255,255,0.16);transform:translateY(-1px)}
+		.home-shell{max-width:1200px;margin:0 auto;padding:28px 18px 64px;position:relative;z-index:1}
+		.hero{background:linear-gradient(135deg, rgba(31,16,36,0.96), rgba(16,18,30,0.82));border:1px solid rgba(255,255,255,0.08);border-radius:30px;padding:38px 28px 28px;box-shadow:0 28px 55px rgba(0,0,0,0.52), inset 0 0 40px rgba(168,85,247,0.10);backdrop-filter:blur(12px);position:relative;overflow:hidden}
+		.hero::before{content:"";position:absolute;inset:-28% auto auto -12%;width:220px;height:220px;background:radial-gradient(circle, rgba(255,118,170,0.32), transparent 60%);pointer-events:none}
+		.hero::after{content:"";position:absolute;right:-40px;top:-30px;width:190px;height:190px;background:radial-gradient(circle, rgba(139,92,246,0.22), transparent 62%);pointer-events:none}
+		.kicker{display:inline-block;padding:7px 12px;background:rgba(255,94,125,0.12);border:1px solid rgba(255,94,125,0.35);border-radius:999px;color:#ffb5c7;font-size:12px;letter-spacing:1px;font-weight:800;text-transform:uppercase}
+		h1{margin:18px 0 8px;font-size:clamp(2.4rem, 4vw, 4.7rem);line-height:1.02;letter-spacing:-0.05em;text-shadow:0 0 24px rgba(168,85,247,0.35)}
+		.subtitle{margin:0 0 20px;max-width:780px;font-size:1.08rem;color:var(--muted);line-height:1.7}
+		.hero-nav{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 0}
+		.hero-nav a{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:999px;background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025));border:1px solid rgba(255,255,255,0.12);color:var(--text);text-decoration:none;font-size:0.85rem;font-weight:700;letter-spacing:0.04em;transition:all 0.2s ease}
+		.hero-nav a:hover{transform:translateY(-1px);border-color:rgba(255,255,255,0.2);background:linear-gradient(135deg, rgba(255,91,125,0.18), rgba(139,92,246,0.18))}
+		.search-wrap{margin-top:10px;max-width:100%}
+		#searchBox{width:100%;padding:22px 24px;border-radius:20px;border:1px solid rgba(255,255,255,0.14);background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));color:var(--text);font-size:1.22rem;outline:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.02), 0 16px 30px rgba(0,0,0,0.36), 0 0 0 2px rgba(139,92,246,0.08);transition:border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease}
+		#searchBox:focus{border-color:rgba(255,133,170,0.65);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04), 0 18px 34px rgba(0,0,0,0.4), 0 0 0 3px rgba(255,91,125,0.12);transform:translateY(-1px)}
+		#searchBox::placeholder{color:#f1dff7;opacity:0.75}
+		.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px}
+		.metric{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));border:1px solid var(--line);border-radius:16px;padding:12px 14px;box-shadow:inset 0 0 14px rgba(168,85,247,0.08);transition:transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease}
+		.metric:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.18);box-shadow:inset 0 0 14px rgba(168,85,247,0.12), 0 10px 18px rgba(0,0,0,0.14)}
+		.metric strong{display:block;font-size:1.5rem;color:var(--jade);letter-spacing:-0.04em}
+		.metric span{font-size:0.82rem;color:var(--muted)}
+		.content-grid{display:grid;grid-template-columns:1.2fr 0.8fr;gap:22px;margin-top:30px}
+		.section,.gallery-panel,.info-panel{background:linear-gradient(180deg, rgba(25,17,27,0.94), rgba(17,13,20,0.88));border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 18px 35px rgba(0,0,0,0.3), inset 0 0 18px rgba(255,94,125,0.04);transition:transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;backdrop-filter:blur(6px)}
+		.section:hover,.gallery-panel:hover,.info-panel:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.14);box-shadow:0 24px 40px rgba(0,0,0,0.34), inset 0 0 18px rgba(255,94,125,0.06);background:rgba(24,17,29,0.86)}
+		.section-header{margin-bottom:16px}
+		.section-header h2,.gallery-panel h3,.info-panel h3{margin:0;font-size:1.42rem}
+		.section h2{color:var(--accent-3)}
+		.gallery-panel h3,.info-panel h3{color:#ffb8c8}
+		.pill{display:inline-block;margin-bottom:10px;padding:6px 10px;border-radius:999px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;font-weight:800;color:#ffc4d5;background:rgba(255,91,125,0.10);border:1px solid rgba(255,91,125,0.26)}
+		.feature-grid,.char-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+		.feature-card,a.back{display:flex;flex-direction:column;justify-content:center;min-height:60px;padding:12px 14px;border-radius:16px;color:#fff8ff;text-decoration:none;font-weight:800;background:linear-gradient(135deg, rgba(255,91,125,0.92), rgba(157,92,255,0.82));border:1px solid rgba(255,255,255,0.12);box-shadow:0 10px 18px rgba(157,92,255,0.20), inset 0 0 12px rgba(255,255,255,0.06);transition:transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease, border-color 0.22s ease}
+		.feature-card small, a.back small{font-size:11px;color:rgba(255,255,255,0.80);font-weight:600;margin-top:4px}
+		.feature-card:hover, a.back:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 16px 28px rgba(157,92,255,0.28), 0 0 18px rgba(255,91,125,0.14);filter:brightness(1.07);border-color:rgba(255,255,255,0.22)}
+		a.back:active{transform:translateY(0) scale(0.99)}
+		.link-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:10px}
+		.link-list a{display:block;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid var(--line);color:var(--text);text-decoration:none;font-weight:700;transition:all 0.2s ease}
+		.link-list a:hover{background:rgba(139,92,246,0.12);border-color:rgba(255,255,255,0.18);transform:translateY(-1px)}
+		.info-panel p,.info-panel li{color:var(--muted);line-height:1.7}
+		.info-panel ul{padding-left:18px;margin:0}
+		.gallery-panel select,.gallery-panel button{padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);font-size:0.96rem;transition:transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease}
+		.gallery-panel select:focus,.gallery-panel button:hover{border-color:rgba(255,255,255,0.22);box-shadow:0 0 0 3px rgba(139,92,246,0.12)}
+		.gallery-panel select{background:rgba(255,255,255,0.04);color:var(--text);width:100%}
+		.gallery-panel button{background:linear-gradient(135deg, var(--accent), var(--accent-2));color:#fff;font-weight:800;cursor:pointer;border:none}
+		.gallery-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+		#loading{color:var(--muted);font-size:0.9rem}
+		#results{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+		#results a.back{min-height:38px;padding:8px 12px;font-size:0.9rem}
+		.top-float{position:fixed;right:22px;bottom:22px;z-index:1000;display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg, #ff5b7d, #9d5cff 60%, #f7bf5a);color:#fff;text-decoration:none;font-weight:900;box-shadow:0 14px 28px rgba(157,92,255,0.35), 0 0 18px rgba(255,91,125,0.22);border:1px solid rgba(255,255,255,0.14);transition:transform 0.2s ease, box-shadow 0.2s ease}
+		.top-float:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 18px 30px rgba(157,92,255,0.42), 0 0 22px rgba(255,91,125,0.25)}
+		#galleryGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:16px}
+		#galleryGrid > div{background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:12px;padding:8px}
+		#galleryGrid img{display:block;width:100%;height:140px;object-fit:cover;border-radius:8px}
+		#galleryGrid a{display:inline-block;margin-top:8px;color:#ffbfd5;font-size:12px;text-decoration:none}
+		@media (max-width: 860px){.content-grid{grid-template-columns:1fr}.top-float{width:48px;height:48px;right:16px;bottom:16px}}
+		@media (max-width: 520px){.hero{padding:22px 16px}.section,.gallery-panel,.info-panel{padding:18px 16px}.char-grid,.feature-grid,.link-list{grid-template-columns:repeat(2, minmax(0, 1fr))}.gallery-actions{display:block}.gallery-actions > *{width:100%;margin-bottom:10px}}
+	</style>
+</head>
+<body>
+	<a id="top"></a>
+	<header class="site-header">
+		<div class="site-header-inner">
+			<div class="brand">Anime Vault</div>
+			<nav class="topnav" aria-label="Main navigation">
+				<a href="#featured-legends">Legends</a>
+				<a href="#anime-collection">Anime</a>
+				<a href="#gallery-panel">Gallery</a>
+				<a href="Home.html">Home</a>
+			</nav>
+		</div>
+	</header>
+	<div class="home-shell">
+		<div class="hero">
+			<span class="kicker">Character hub</span>
+			<h1>Anime Character Vault</h1>
+			<p class="subtitle">Discover the stories, powers, and legacy behind your favorite anime icons. Search a character, browse a world, and dive into the moments that made them unforgettable.</p>
+			<div class="hero-nav">
+				<a href="#featured-legends">Legendary standouts</a>
+				<a href="#anime-collection">Anime universe</a>
+				<a href="#gallery-panel">Image vault</a>
+			</div>
+			<div class="search-wrap">
+				<input id="searchBox" type="search" placeholder="Search characters, anime, or legendary teams..." aria-label="Search characters">
+			</div>
+			<div class="metrics">
+				<div class="metric"><strong>100+</strong><span>Icons</span></div>
+				<div class="metric"><strong>30+</strong><span>Worlds</span></div>
+				<div class="metric"><strong>1</strong><span>Ultimate hub</span></div>
+			</div>
+		</div>
+
+		<div id="featured-legends" class="content-grid">
+			<div class="section">
+				<div class="section-header">
+					<span class="pill">Legendary standouts</span>
+					<h2>Fan-favorite icons</h2>
+				</div>
+				<div class="feature-grid">
+					<a class="feature-card" href="Itachi.html" style="background:linear-gradient(135deg, rgba(255,91,125,0.92), rgba(157,92,255,0.82)), url('images/itachi-portrait.jpg') center/cover;"><span>Itachi</span><small>tragic protector</small></a>
+					<a class="feature-card" href="Naruto.html" style="background:linear-gradient(135deg, rgba(255,91,125,0.92), rgba(157,92,255,0.82)), url('images/naruto-portrait.jpg') center/cover;"><span>Naruto</span><small>unshakable hope</small></a>
+					<a class="feature-card" href="Sasuke.html" style="background:linear-gradient(135deg, rgba(255,91,125,0.92), rgba(157,92,255,0.82)), url('images/sasuke-portrait.jpg') center/cover;"><span>Sasuke</span><small>driven rival</small></a>
+					<a class="feature-card" href="Eren.html" style="background:linear-gradient(135deg, rgba(255,91,125,0.92), rgba(157,92,255,0.82)), url('images/eren-portrait.jpg') center/cover;"><span>Eren</span><small>battle for freedom</small></a>
+					<a class="feature-card" href="Mikasa.html" style="background:linear-gradient(135deg, rgba(255,91,125,0.92), rgba(157,92,255,0.82)), url('images/mikasa-portrait.jpg') center/cover;"><span>Mikasa</span><small>fearless devotion</small></a>
+					<a class="feature-card" href="Tanjiro.html" style="background:linear-gradient(135deg, rgba(255,91,125,0.92), rgba(157,92,255,0.82)), url('images/tanjiro-portrait.jpg') center/cover;"><span>Tanjiro</span><small>heart and resolve</small></a>
+				</div>
+			</div>
+			<div class="info-panel">
+				<h3>Why this archive matters</h3>
+				<p>From the emotional weight of Itachi to the unbreakable spirit of Naruto and the chaos of Eren, this archive gathers the most unforgettable anime icons in one polished destination.</p>
+				<ul>
+					<li>Deep character stories, arcs, and legacy.</li>
+					<li>Anime overviews, gallery collections, and power profiles.</li>
+					<li>Smooth browsing in a sleek, immersive dark theme.</li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="anime-collection" class="content-grid" style="margin-top:22px">
+			<div class="section">
+				<div class="section-header">
+					<span class="pill">Core watchlist</span>
+					<h2>Anime universe</h2>
+				</div>
+				<div class="link-list">
+					<a href="Naruto-anime.html">Naruto</a>
+					<a href="AttackOnTitan-anime.html">Attack on Titan</a>
+					<a href="DemonSlayer-anime.html">Demon Slayer</a>
+					<a href="JujutsuKaisen-anime.html">Jujutsu Kaisen</a>
+					<a href="Bleach-anime.html">Bleach</a>
+					<a href="DragonBall-anime.html">Dragon Ball</a>
+					<a href="MyHeroAcademia-anime.html">My Hero Academia</a>
+					<a href="DeathNote-anime.html">Death Note</a>
+					<a href="OnePiece-anime.html">One Piece</a>
+					<a href="BlackClover-anime.html">Black Clover</a>
+					<a href="HunterXHunter-anime.html">Hunter x Hunter</a>
+					<a href="TokyoGhoul-anime.html">Tokyo Ghoul</a>
+				</div>
+			</div>
+			<div class="section">
+				<div class="section-header">
+					<span class="pill">Curated picks</span>
+					<h2>Trending discoveries</h2>
+				</div>
+				<div class="link-list">
+					<a href="OnePunchMan-anime.html">One Punch Man</a>
+					<a href="FairyTail-anime.html">Fairy Tail</a>
+					<a href="Frieren-anime.html">Frieren</a>
+					<a href="ChainsawMan-anime.html">Chainsaw Man</a>
+					<a href="SpyXFamily-anime.html">Spy x Family</a>
+					<a href="VinlandSaga-anime.html">Vinland Saga</a>
+					<a href="FullmetalAlchemist-anime.html">Fullmetal Alchemist</a>
+					<a href="SoloLeveling-anime.html">Solo Leveling</a>
+					<a href="AssassinationClassroom-anime.html">Assassination Classroom</a>
+					<a href="BlueExorcist-anime.html">Blue Exorcist</a>
+					<a href="BlueLock-anime.html">Blue Lock</a>
+					<a href="CodeGeass-anime.html">Code Geass</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="content-grid" style="margin-top:22px">
+			<div class="section">
+				<div class="section-header">
+					<span class="pill">Main roster</span>
+					<h2>Signature characters</h2>
+				</div>
+				<div class="char-grid">
+					<a class="back" href="Eren.html">Eren</a>
+					<a class="back" href="Mikasa.html">Mikasa</a>
+					<a class="back" href="Levi.html">Levi</a>
+					<a class="back" href="Armin.html">Armin</a>
+					<a class="back" href="Erwin.html">Erwin</a>
+					<a class="back" href="AttackOnTitan-anime.html">Attack on Titan</a>
+				</div>
+			</div>
+			<div class="section">
+				<div class="section-header">
+					<span class="pill">Spotlight cast</span>
+					<h2>Powerhouse duos</h2>
+				</div>
+				<div class="char-grid">
+					<a class="back" href="Yuji.html">Yuji</a>
+					<a class="back" href="Megumi.html">Megumi</a>
+					<a class="back" href="Gojo.html">Gojo</a>
+					<a class="back" href="Sukuna.html">Sukuna</a>
+					<a class="back" href="Tanjiro.html">Tanjiro</a>
+					<a class="back" href="DemonSlayer-anime.html">Demon Slayer</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="content-grid" style="margin-top:22px">
+			<div class="section">
+				<div class="section-header">
+					<span class="pill">Expanded library</span>
+					<h2>More anime to explore</h2>
+				</div>
+				<div class="char-grid">
+					<a class="back" href="AssassinationClassroom-anime.html">Assassination Classroom</a>
+					<a class="back" href="BlueExorcist-anime.html">Blue Exorcist</a>
+					<a class="back" href="BlueLock-anime.html">Blue Lock</a>
+					<a class="back" href="CodeGeass-anime.html">Code Geass</a>
+					<a class="back" href="DrStone-anime.html">Dr. Stone</a>
+					<a class="back" href="Haikyuu-anime.html">Haikyuu!!</a>
+					<a class="back" href="Horimiya-anime.html">Horimiya</a>
+					<a class="back" href="MobPsycho100-anime.html">Mob Psycho 100</a>
+					<a class="back" href="MushokuTensei-anime.html">Mushoku Tensei</a>
+					<a class="back" href="Parasyte-anime.html">Parasyte</a>
+					<a class="back" href="ReZero-anime.html">Re:Zero</a>
+					<a class="back" href="ThePromisedNeverland-anime.html">The Promised Neverland</a>
+					<a class="back" href="BungoStrayDogs-anime.html">Bungo Stray Dogs</a>
+					<a class="back" href="Dorohedoro-anime.html">Dorohedoro</a>
+					<a class="back" href="SwordArtOnline-anime.html">Sword Art Online</a>
+				</div>
+			</div>
+			<div class="section">
+				<div class="section-header">
+					<span class="pill">Fresh picks</span>
+					<h2>New character roster</h2>
+				</div>
+				<div class="char-grid">
+					<a class="back" href="Nagisa.html">Nagisa</a>
+					<a class="back" href="Rin.html">Rin</a>
+					<a class="back" href="Isagi.html">Isagi</a>
+					<a class="back" href="Lelouch.html">Lelouch</a>
+					<a class="back" href="Senku.html">Senku</a>
+					<a class="back" href="Hinata.html">Hinata</a>
+					<a class="back" href="Natsu.html">Natsu</a>
+					<a class="back" href="Byakuya.html">Byakuya</a>
+				</div>
+			</div>
+		</div>
+
+		<div id="gallery-panel" class="content-grid" style="margin-top:22px">
+			<div class="gallery-panel">
+				<h3>Anime image vault</h3>
+				<div class="gallery-actions">
+					<select id="imageTopic">
+					  <option value="naruto">Naruto</option>
+					  <option value="itachi">Itachi</option>
+					  <option value="sasuke">Sasuke</option>
+					  <option value="kakashi">Kakashi</option>
+					  <option value="sakura">Sakura</option>
+					  <option value="madara">Madara</option>
+					  <option value="eren">Eren</option>
+					  <option value="mikasa">Mikasa</option>
+					  <option value="levi">Levi</option>
+					  <option value="armin">Armin</option>
+					  <option value="tanjiro">Tanjiro</option>
+					  <option value="nezuko">Nezuko</option>
+					  <option value="yuji">Yuji</option>
+					  <option value="megumi">Megumi</option>
+					  <option value="gojo">Gojo</option>
+					  <option value="one piece">One Piece</option>
+					  <option value="bleach">Bleach</option>
+					  <option value="dragon ball">Dragon Ball</option>
+					  <option value="fullmetal alchemist">Fullmetal Alchemist</option>
+					  <option value="anime">Anime</option>
+					  <option value="anime characters">Anime characters</option>
+					</select>
+					<button id="loadImages" type="button">Reveal 20 images</button>
+					<div id="loading" style="display:none">Loading…</div>
+				</div>
+				<div id="galleryGrid"></div>
+				<div id="results"></div>
+			</div>
+		</div>
+	</div>
+
+	<a class="top-float" href="#top" aria-label="Back to top">↑</a>
+
+	<script>
+		const characters = [
+			{name:'Itachi', page:'Itachi.html', type:'Character'},
+			{name:'Naruto', page:'Naruto.html', type:'Character'},
+			{name:'Sasuke', page:'Sasuke.html', type:'Character'},
+			{name:'Kakashi', page:'Kakashi.html', type:'Character'},
+			{name:'Sakura', page:'Sakura.html', type:'Character'},
+			{name:'Madara', page:'Madara.html', type:'Character'},
+			{name:'Eren', page:'Eren.html', type:'Character'},
+			{name:'Mikasa', page:'Mikasa.html', type:'Character'},
+			{name:'Levi', page:'Levi.html', type:'Character'},
+			{name:'Armin', page:'Armin.html', type:'Character'},
+			{name:'Erwin', page:'Erwin.html', type:'Character'},
+			{name:'Tanjiro', page:'Tanjiro.html', type:'Character'},
+			{name:'Nezuko', page:'Nezuko.html', type:'Character'},
+			{name:'Zenitsu', page:'Zenitsu.html', type:'Character'},
+			{name:'Inosuke', page:'Inosuke.html', type:'Character'},
+			{name:'Yuji', page:'Yuji.html', type:'Character'},
+			{name:'Megumi', page:'Megumi.html', type:'Character'},
+			{name:'Gojo', page:'Gojo.html', type:'Character'},
+			{name:'Nobara', page:'Nobara.html', type:'Character'},
+			{name:'Sukuna', page:'Sukuna.html', type:'Character'},
+			{name:'One Piece', page:'OnePiece.html', type:'Character'},
+			{name:'Bleach', page:'Bleach.html', type:'Character'},
+			{name:'Dragon Ball', page:'DragonBall.html', type:'Character'},
+			{name:'Fullmetal Alchemist', page:'FullmetalAlchemist.html', type:'Character'},
+			{name:'Death Note', page:'DeathNote.html', type:'Character'},
+			{name:'Hunter x Hunter', page:'HunterXHunter.html', type:'Character'},
+			{name:'My Hero Academia', page:'MyHeroAcademia.html', type:'Character'},
+			{name:'Black Clover', page:'BlackClover.html', type:'Character'},
+			{name:'Tokyo Ghoul', page:'TokyoGhoul.html', type:'Character'},
+			{name:'Solo Leveling', page:'SoloLeveling.html', type:'Character'},
+			{name:'Senku', page:'Senku.html', type:'Character'},
+			{name:'Isagi', page:'Isagi.html', type:'Character'},
+			{name:'Lelouch', page:'Lelouch.html', type:'Character'},
+			{name:'Hinata', page:'Hinata.html', type:'Character'},
+			{name:'Natsu', page:'Natsu.html', type:'Character'},
+			{name:'Byakuya', page:'Byakuya.html', type:'Character'}
+		];
+		const animeEntries = [
+			{name:'Naruto', page:'Naruto-anime.html', type:'Anime'},
+			{name:'Attack on Titan', page:'AttackOnTitan-anime.html', type:'Anime'},
+			{name:'Demon Slayer', page:'DemonSlayer-anime.html', type:'Anime'},
+			{name:'Jujutsu Kaisen', page:'JujutsuKaisen-anime.html', type:'Anime'},
+			{name:'Bleach', page:'Bleach-anime.html', type:'Anime'},
+			{name:'Dragon Ball', page:'DragonBall-anime.html', type:'Anime'},
+			{name:'My Hero Academia', page:'MyHeroAcademia-anime.html', type:'Anime'},
+			{name:'Death Note', page:'DeathNote-anime.html', type:'Anime'},
+			{name:'One Piece', page:'OnePiece-anime.html', type:'Anime'},
+			{name:'Black Clover', page:'BlackClover-anime.html', type:'Anime'},
+			{name:'Hunter x Hunter', page:'HunterXHunter-anime.html', type:'Anime'},
+			{name:'Tokyo Ghoul', page:'TokyoGhoul-anime.html', type:'Anime'},
+			{name:'Fairy Tail', page:'FairyTail-anime.html', type:'Anime'},
+			{name:'Frieren', page:'Frieren-anime.html', type:'Anime'},
+			{name:'Chainsaw Man', page:'ChainsawMan-anime.html', type:'Anime'},
+			{name:'Spy x Family', page:'SpyXFamily-anime.html', type:'Anime'},
+			{name:'Vinland Saga', page:'VinlandSaga-anime.html', type:'Anime'},
+			{name:'Fullmetal Alchemist', page:'FullmetalAlchemist-anime.html', type:'Anime'},
+			{name:'Solo Leveling', page:'SoloLeveling-anime.html', type:'Anime'},
+			{name:'Dr. Stone', page:'DrStone-anime.html', type:'Anime'},
+			{name:'Blue Exorcist', page:'BlueExorcist-anime.html', type:'Anime'},
+			{name:'Code Geass', page:'CodeGeass-anime.html', type:'Anime'},
+			{name:'Assassination Classroom', page:'AssassinationClassroom-anime.html', type:'Anime'},
+			{name:'Blue Lock', page:'BlueLock-anime.html', type:'Anime'},
+			{name:'Haikyuu', page:'Haikyuu-anime.html', type:'Anime'},
+			{name:'Horimiya', page:'Horimiya-anime.html', type:'Anime'},
+			{name:'Mob Psycho 100', page:'MobPsycho100-anime.html', type:'Anime'},
+			{name:'Mushoku Tensei', page:'MushokuTensei-anime.html', type:'Anime'},
+			{name:'Parasyte', page:'Parasyte-anime.html', type:'Anime'},
+			{name:'Re:Zero', page:'ReZero-anime.html', type:'Anime'},
+			{name:'The Promised Neverland', page:'ThePromisedNeverland-anime.html', type:'Anime'},
+			{name:'Bungo Stray Dogs', page:'BungoStrayDogs-anime.html', type:'Anime'},
+			{name:'Dorohedoro', page:'Dorohedoro-anime.html', type:'Anime'},
+			{name:'Sword Art Online', page:'SwordArtOnline-anime.html', type:'Anime'}
+		];
+		const searchableItems = [...characters, ...animeEntries];
+		const box = document.getElementById('searchBox');
+		const results = document.getElementById('results');
+		function renderMatches(query){
+			results.innerHTML = '';
+			if(!query){ return; }
+			const q = query.toLowerCase().trim();
+			const matches = searchableItems
+				.filter(item => item.name.toLowerCase().includes(q))
+				.sort((a,b) => {
+					const aExact = a.name.toLowerCase() === q ? 0 : 1;
+					const bExact = b.name.toLowerCase() === q ? 0 : 1;
+					if (aExact !== bExact) return aExact - bExact;
+					return a.name.localeCompare(b.name);
+				});
+			if(!matches.length){
+				results.innerHTML = '<div style="color:#dfefff;margin-top:6px">No matches found</div>';
+				return;
+			}
+			for(const m of matches){
+				const a = document.createElement('a');
+				a.href = m.page;
+				a.textContent = m.name;
+				a.title = m.type;
+				a.className = 'back';
+				results.appendChild(a);
+			}
+		}
+		box.addEventListener('input', event => {
+			const query = event.target.value.trim();
+			if (!query) {
+				results.innerHTML = '';
+				return;
+			}
+			renderMatches(query);
+		});
+		box.addEventListener('keydown', event => {
+			if(event.key === 'Enter'){
+				const first = results.querySelector('a');
+				if(first){ window.location = first.href; }
+			}
+		});
+		async function fetchCommonsImages(searchTerm, count){
+			const api = 'https://commons.wikimedia.org/w/api.php';
+			const params = new URLSearchParams({
+				action: 'query',
+				format: 'json',
+				generator: 'search',
+				gsrsearch: searchTerm,
+				gsrlimit: count,
+				prop: 'imageinfo',
+				iiprop: 'url|extmetadata',
+				origin: '*'
+			});
+			const resp = await fetch(api + '?' + params.toString()).then(r => r.json());
+			const pages = resp.query && resp.query.pages ? Object.values(resp.query.pages) : [];
+			return pages.map(p => {
+				const info = p.imageinfo && p.imageinfo[0];
+				return info ? {
+					url: info.url,
+					desc: info.extmetadata && info.extmetadata.Artist ? info.extmetadata.Artist.value : '',
+					license: info.extmetadata && info.extmetadata.LicenseShortName ? info.extmetadata.LicenseShortName.value : '',
+					source: 'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(p.title.replace('File:', ''))
+				} : null;
+			}).filter(Boolean);
+		}
+		function clearGallery(){document.getElementById('galleryGrid').innerHTML = ''}
+		function renderGallery(items){
+			const grid = document.getElementById('galleryGrid');
+			for(const item of items){
+				const card = document.createElement('div');
+				const img = document.createElement('img');
+				img.src = item.url;
+				img.alt = item.desc || 'anime image';
+				const link = document.createElement('a');
+				link.href = item.source;
+				link.target = '_blank';
+				link.rel = 'noreferrer';
+				link.textContent = item.license || 'source';
+				card.appendChild(img);
+				card.appendChild(link);
+				grid.appendChild(card);
+			}
+		}
+		document.getElementById('loadImages').addEventListener('click', async () => {
+			const topic = document.getElementById('imageTopic').value || 'anime';
+			const loading = document.getElementById('loading');
+			loading.style.display = 'inline';
+			clearGallery();
+			try {
+				const items = await fetchCommonsImages(topic, 20);
+				if(!items.length){
+					document.getElementById('galleryGrid').innerHTML = '<div style="color:#dfefff">No images found.</div>';
+				} else {
+					renderGallery(items);
+				}
+			} catch (err) {
+				document.getElementById('galleryGrid').innerHTML = '<div style="color:#ffb4b4">Failed to load images.</div>';
+				console.error(err);
+			} finally { loading.style.display = 'none'; }
+		});
+	</script>
+</body>
+</html>
